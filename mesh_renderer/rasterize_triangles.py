@@ -22,6 +22,11 @@ import os
 import tensorflow as tf
 
 
+try:
+    xrange
+except NameError:
+    xrange = range
+
 rasterize_triangles_module = tf.load_op_library(
     os.path.join(os.environ['TEST_SRCDIR'],
     'tf_mesh_renderer/mesh_renderer/kernels/rasterize_triangles_kernel.so'))

@@ -27,6 +27,11 @@ import mesh_renderer
 import test_utils
 
 
+try:
+    xrange
+except NameError:
+    xrange = range
+
 class RenderTest(tf.test.TestCase):
 
   def setUp(self):
