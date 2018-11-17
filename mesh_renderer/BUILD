@@ -2,7 +2,7 @@ package(default_visibility = ["//visibility:public"])
 
 py_library(
     name = "mesh_renderer",
-    srcs = ["mesh_renderer.py"],
+    srcs = ["mesh_renderer_impl.py"],
     deps = [
         ":rasterize_triangles",
     ],
