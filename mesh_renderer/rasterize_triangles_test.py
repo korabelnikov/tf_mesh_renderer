@@ -21,9 +21,9 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from . import test_utils
-from . import camera_utils
-from . import rasterize_triangles
+from mesh_renderer import test_utils
+from mesh_renderer import camera_utils
+from mesh_renderer import rasterize_triangles
 
 
 class RenderTest(tf.test.TestCase):
