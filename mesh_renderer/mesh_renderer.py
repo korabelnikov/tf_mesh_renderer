@@ -20,8 +20,8 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-import camera_utils
-import rasterize_triangles
+from . import camera_utils
+from . import rasterize_triangles
 
 
 def phong_shader(normals,

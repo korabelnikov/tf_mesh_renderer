@@ -27,9 +27,12 @@ try:
 except NameError:
     xrange = range
 
-rasterize_triangles_module = tf.load_op_library(
-    os.path.join(os.environ['TEST_SRCDIR'],
-    'tf_mesh_renderer/mesh_renderer/kernels/rasterize_triangles_kernel.so'))
+import inspect
+curr = os.path.dirname(inspect.stack()[0][1])
+
+module_path = os.path.abspath(os.path.join(curr,
+        '../bazel-out/k8-fastbuild/genfiles/mesh_renderer/kernels/rasterize_triangles_kernel.so'))
+rasterize_triangles_module = tf.load_op_library(module_path)
 
 
 # This epsilon should be smaller than any valid barycentric reweighting factor
