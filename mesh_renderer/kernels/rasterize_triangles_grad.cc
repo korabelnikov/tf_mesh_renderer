@@ -141,7 +141,6 @@ class RasterizeTrianglesGradOp : public OpKernel {
     // dbarycentric_coordinate[0,1,2]/dvertex[0x, 0y, 1x, 1y, 2x, 2y].
     // Next we compute each value above's contribution to
     // df/dvertices, building up that matrix as the output of this iteration.
-    #pragma omp parallel for
     for (unsigned int pixel_id = 0; pixel_id < image_height_ * image_width_;
          ++pixel_id) {
       // b0, b1, and b2 are the three barycentric coordinate values

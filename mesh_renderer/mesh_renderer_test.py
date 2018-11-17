@@ -22,9 +22,9 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from mesh_renderer import camera_utils
-from mesh_renderer import mesh_renderer
-from mesh_renderer import test_utils
+import camera_utils
+import mesh_renderer
+import test_utils
 
 
 try:
