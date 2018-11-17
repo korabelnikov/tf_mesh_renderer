@@ -23,7 +23,7 @@ import numpy as np
 import tensorflow as tf
 
 from mesh_renderer import camera_utils
-from mesh_renderer import mesh_renderer
+from mesh_renderer import mesh_renderer_impl
 from mesh_renderer import test_utils
 
 
@@ -36,7 +36,7 @@ class RenderTest(tf.test.TestCase):
 
   def setUp(self):
     self.test_data_directory = (
-        'mesh_renderer/test_data/')
+        'tf_mesh_renderer/test_data/')
 
     tf.reset_default_graph()
     # Set up a basic cube centered at the origin, with vertex normals pointing
@@ -80,7 +80,7 @@ class RenderTest(tf.test.TestCase):
     light_intensities = tf.ones([2, 1, 3], dtype=tf.float32)
     vertex_diffuse_colors = tf.ones_like(vertices_world_space, dtype=tf.float32)
 
-    rendered = mesh_renderer.mesh_renderer(
+    rendered = mesh_renderer_impl.mesh_renderer(
         vertices_world_space, self.cube_triangles, normals_world_space,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height)
@@ -149,28 +149,28 @@ class RenderTest(tf.test.TestCase):
     shininess_coefficients = 6.0 * tf.ones([2, 8], dtype=tf.float32)
     ambient_color = tf.constant(
         [[0., 0., 0.], [0.1, 0.1, 0.2]], dtype=tf.float32)
-    renders = mesh_renderer.mesh_renderer(
+    renders = mesh_renderer_impl.mesh_renderer(
         vertices_world_space, self.cube_triangles, normals_world_space,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height, vertex_specular_colors,
         shininess_coefficients, ambient_color, fov_y, near_clip, far_clip)
     tonemapped_renders = tf.concat(
         [
-            mesh_renderer.tone_mapper(renders[:, :, :, 0:3], 0.7),
+            mesh_renderer_impl.tone_mapper(renders[:, :, :, 0:3], 0.7),
             renders[:, :, :, 3:4]
         ],
         axis=3)
 
     # Check that shininess coefficient broadcasting works by also rendering
     # with a scalar shininess coefficient, and ensuring the result is identical:
-    broadcasted_renders = mesh_renderer.mesh_renderer(
+    broadcasted_renders = mesh_renderer_impl.mesh_renderer(
         vertices_world_space, self.cube_triangles, normals_world_space,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height, vertex_specular_colors,
         6.0, ambient_color, fov_y, near_clip, far_clip)
     tonemapped_broadcasted_renders = tf.concat(
         [
-            mesh_renderer.tone_mapper(broadcasted_renders[:, :, :, 0:3], 0.7),
+            mesh_renderer_impl.tone_mapper(broadcasted_renders[:, :, :, 0:3], 0.7),
             broadcasted_renders[:, :, :, 3:4]
         ],
         axis=3)
@@ -224,7 +224,7 @@ class RenderTest(tf.test.TestCase):
 
     vertex_diffuse_colors = tf.ones_like(vertices_world_space, dtype=tf.float32)
 
-    rendered = mesh_renderer.mesh_renderer(
+    rendered = mesh_renderer_impl.mesh_renderer(
         vertices_world_space, self.cube_triangles, normals_world_space,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height)
@@ -270,7 +270,7 @@ class RenderTest(tf.test.TestCase):
     light_positions = tf.reshape(eye, [1, 1, 3])
     light_intensities = tf.ones([1, 1, 3], dtype=tf.float32)
 
-    render = mesh_renderer.mesh_renderer(
+    render = mesh_renderer_impl.mesh_renderer(
         vertices_world_space, self.cube_triangles, normals_world_space,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height)
@@ -286,7 +286,7 @@ class RenderTest(tf.test.TestCase):
     desired_normals = tf.reshape(
         tf.matmul(self.cube_normals, test_model_rotation, transpose_b=True),
         [1, 8, 3])
-    desired_render = mesh_renderer.mesh_renderer(
+    desired_render = mesh_renderer_impl.mesh_renderer(
         desired_vertex_positions, self.cube_triangles, desired_normals,
         vertex_diffuse_colors, eye, center, world_up, light_positions,
         light_intensities, image_width, image_height)
